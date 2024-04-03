@@ -1,8 +1,8 @@
 from dotenv import load_dotenv
 import os
-from get import DataReader
-from get import OKXAPI
-from post import DataAction
+from OKX_by_Me.get import DataReader
+from OKX_by_Me.get import OKXAPI
+from OKX_by_Me.post import DataAction
 from time import sleep
 load_dotenv()
 
