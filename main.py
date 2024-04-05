@@ -12,18 +12,19 @@ api_key = os.getenv("API_KEY")
 secret_key = os.getenv("SECRET_KEY")
 passphrase = os.getenv("PASSPHRASE")
 
-unique_names = ['A8AF8AFFAB6051B3',# Plymouth
-                '2255AC08798746CA', #champion🏆 
-                'D5E7A8430A35CA84', #Average-Moon-Cypress 
+# unique_names = ['A8AF8AFFAB6051B3',# Plymouth
+#                 '2255AC08798746CA', #champion🏆 
+#                 'D5E7A8430A35CA84', #Average-Moon-Cypress 
+#                 'DDF529A6117DBB92', #Back-Cap-Octopus 
+#                 'A426DA00959F951D', #viking212
+#                 '7A26AF50E89FAF5E', #Dry-Peg-Jack 
+#                 '43B321994B98152D',#Mr. Zheng 
+#                 'E7C4B5ED74DF4762'#ITEKCrypto
+# ]
+
+unique_names = [
                 'DDF529A6117DBB92', #Back-Cap-Octopus 
-                'A426DA00959F951D', #viking212
-                'BF05EB0167329BD2', #Anarak
-                '7A26AF50E89FAF5E', #Dry-Peg-Jack 
-                '43B321994B98152D',#Mr. Zheng 
-                'E7C4B5ED74DF4762'#ITEKCrypto
 ]
-
-
 while True:
     #position_summary
     okx_api = OKXAPI()
@@ -57,6 +58,7 @@ while True:
                         open_avg_px = float(item.get("openAvgPx"))
                         last = float(item.get("last"))
                         percentage_difference = abs((last - open_avg_px) / open_avg_px) * 100
+                        print(f"percentage_difference= {percentage_difference}")
                         if percentage_difference < 2:
                             #gonna buy the new crypto 
                             buy_crypto = DataAction(api_key, secret_key, passphrase, live_trading=False)
@@ -107,4 +109,4 @@ while True:
                         print("I don't have the crypto coin to sell")
 
     print("waiting 15 sc")
-    sleep(15)
+    sleep(30)
