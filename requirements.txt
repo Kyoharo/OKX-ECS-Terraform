@@ -1,3 +1,4 @@
-okx==2.1.0
-requests==2.24.0
-python-okx==0.2.8
+okx
+python-okx
+python-dotenv
+pyrebase4

@@ -1,0 +1,4 @@
+#aws ecr create-repository --repository-name my-okx-lambda-repo
+#aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 224330286387.dkr.ecr.us-west-2.amazonaws.com
+#docker tag my-lambda-image:latest 224330286387.dkr.ecr.us-west-2.amazonaws.com/my-okx-lambda-repo:latest
+#docker push 224330286387.dkr.ecr.us-west-2.amazonaws.com/my-okx-lambda-repo:latest
