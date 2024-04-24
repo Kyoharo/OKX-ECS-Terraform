@@ -1,8 +1,8 @@
 from dotenv import load_dotenv
 import os
-from get import DataReader
-from get import OKXAPI
-from post import DataAction
+from actions.get import DataReader
+from actions.get import OKXAPI
+from actions.post import DataAction
 
 class CryptoTrader:
     def __init__(self):
@@ -12,7 +12,14 @@ class CryptoTrader:
         self.passphrase = os.getenv("PASSPHRASE")
         self.unique_names = os.getenv("UNIQUE_NAMES").split(',')
         self.okx_api = OKXAPI()
-
+        self.coin_to_buy = int(os.getenv("COIN_TO_BUY", 10))  # Default to 10 if not specified
+    
+    def calculate_buy_amount(self, available_balance, usdt_balance):
+        if len(available_balance) <= self.coin_to_buy:
+            return float(usdt_balance) / (self.coin_to_buy - len(available_balance) + 1)
+        else:
+            return float(usdt_balance)  # Default to using all USDT balance
+    
     def trade(self):
         self.buy_new_crypto()
         self.sell_crypto()
@@ -22,12 +29,14 @@ class CryptoTrader:
         if position_summary_data:
             for item in position_summary_data:
                 new_crypto = item["instId"]
+                print(item['posSide'])
                 if new_crypto:
                     data_reader = DataReader(self.api_key, self.secret_key, self.passphrase, live_trading=False)
                     available_balance = data_reader.get_account_balance()
                     usdt_available = False
+                    usdt_balance = 0  # Define outside loop
                     for balance_item in available_balance:
-                        if balance_item['ccy'] == 'USDT' and float(balance_item['eqUsd']) > 30:
+                        if balance_item['ccy'] == 'USDT' and float(balance_item['eqUsd']) > 10:
                             usdt_available = True
                             usdt_balance = balance_item['eqUsd']
                             break
@@ -39,32 +48,19 @@ class CryptoTrader:
                                 already_exist = True
                                 break
                         if not already_exist:
-                            open_avg_px = float(item.get("openAvgPx"))
-                            last = float(item.get("last"))
-                            percentage_difference = abs((last - open_avg_px) / open_avg_px) * 100
-                            if percentage_difference < 2:
-                                buy_crypto = DataAction(self.api_key, self.secret_key, self.passphrase, live_trading=False)
-                                if len(available_balance) == 1:
-                                    new_crypto = new_crypto.replace("-SWAP", "")
-                                    buy_amount = float(usdt_balance) / 2
-                                    usdt_balance_formatted = str(int(float(buy_amount)))
-                                    buy_crypto.post_order(new_crypto, "buy", "market", usdt_balance_formatted)
-                                    trader = item["uniqueName"]
-                                    print(f"Trader: {trader}\n>> {new_crypto}: has been bought successful")
-                                else:
-                                    usdt_balance_formatted = str(int(float(usdt_balance)))
-                                    new_crypto = new_crypto.replace("-SWAP", "")
-                                    buy_crypto.post_order(new_crypto, "buy", "market",usdt_balance_formatted)
-                                    trader = item["uniqueName"]
-                                    print(f"Trader: {trader}\n>> {new_crypto}: has been bought successful")
-
-
+                            buy_crypto = DataAction(self.api_key, self.secret_key, self.passphrase, live_trading=False)
+                            buy_amount = self.calculate_buy_amount(available_balance, usdt_balance)
+                            usdt_balance_formatted = str(int(float(buy_amount)))
+                            buy_crypto.post_order(new_crypto.replace("-SWAP", ""), "buy", "market", usdt_balance_formatted)
+                            trader = item["uniqueName"]
+                            print(f"Trader: {trader}\n>> {new_crypto}: has been bought successful")
                     else:
-                        print("Not enough USDT available")
+                        print(f"{new_crypto} :Not enough USDT available")
                 else:
                     print("No new crypto found")
         else:
-            print("No position summary data found")
+            # print("No position summary data found")
+            pass
 
     def sell_crypto(self):
         position_history_data = self.okx_api.fetch_position_history(self.unique_names)
@@ -92,4 +88,5 @@ class CryptoTrader:
                         trader = item["uniqueName"]
                         print(f"Trader: {trader}\n>> {new_crypto}: I don't have the crypto coin to sell")
         else:
-            print("No position history data found")
+            pass
+            #print("No position history data found")
