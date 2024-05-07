@@ -80,7 +80,7 @@ class GateAPI:
 
 def check_time():
     now = datetime.datetime.now()
-    if now.hour == 17 and now.minute == 14:
+    if now.hour == 11 and now.minute == 00:
         return True
     else:
         return False
@@ -118,7 +118,7 @@ def main(buy_with_usdt,coin_name):
     price_at_buy = buy_with_usdt / available_quantity if available_quantity != 0 else 0  
     print("Price at buy:", price_at_buy)
     # 1% higher than the price at buy
-    threshold_price = price_at_buy + (price_at_buy * 0.01)
+    threshold_price = price_at_buy + (price_at_buy * 0.20)
 
     while True:
         order_book_data = gate_api.get_order_book(coin_name)
@@ -133,7 +133,7 @@ def main(buy_with_usdt,coin_name):
             time.sleep(1)
 
 if __name__ == "__main__":
-    main("10","APU_USDT")
+    main("5","GAMES_USDT")
 
 
 

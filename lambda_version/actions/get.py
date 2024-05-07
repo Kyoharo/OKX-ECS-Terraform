@@ -61,7 +61,7 @@ class OKXAPI:
 
     def fetch_position_summary(self, unique_names):
         try:
-            url = "https://www.okx.com/priapi/v5/ecotrade/public/position-summary"
+            url = "https://www.okx.com/priapi/v5/ecotrade/public/position-detail"
             current_time = datetime.datetime.now()
             parsed_data = []
             encountered_cryptos = set()
