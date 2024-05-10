@@ -29,7 +29,6 @@ class CryptoTrader:
         if position_summary_data:
             for item in position_summary_data:
                 new_crypto = item["instId"]
-                print(item['posSide'])
                 if new_crypto:
                     data_reader = DataReader(self.api_key, self.secret_key, self.passphrase, live_trading=False)
                     available_balance = data_reader.get_account_balance()
