@@ -80,7 +80,7 @@ class OKXAPI:
                     for item in data['data']:
                         open_time = datetime.datetime.fromtimestamp(int(item.get("openTime")) / 1000)  # Convert milliseconds to seconds
                         time_diff = (current_time - open_time).total_seconds() / 60  # Convert to minutes
-                        if time_diff < 2:  
+                        if time_diff < 2000:  
                             crypto = item.get("instId")
                             mark_px = "{:.3f}".format(float(item.get("markPx")))
                             open_avg_px = "{:.3f}".format(float(item.get("openAvgPx")))
