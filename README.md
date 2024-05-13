@@ -11,62 +11,61 @@
 
  ### Benefits:
 
-_ _ This approach allows you to potentially benefit from the trading decisions of experienced or successful traders.
+> This approach allows you to potentially benefit from the trading decisions of experienced or successful traders.
 It can automate your trading strategy, saving you time and effort.
 
-Important Considerations:
+### `Important Considerations:`
 
-    Past performance is not necessarily indicative of future results. Just because a trader has been successful in the past doesn't guarantee future success.
-    Market conditions are constantly changing, and there is inherent risk involved in any trading strategy, including this one.
+- Past performance is not necessarily indicative of future results. Just because a trader has been successful in the past doesn't guarantee future success.
+- Market conditions are constantly changing, and there is inherent risk involved in any trading strategy, including this one.
     Always perform thorough backtesting and risk assessment before using this application with real funds.
 
 
 
-Features:
+## Features:
 
-    Connects to the OKX API using provided credentials.
-    Tracks multiple traders (IDs) and their trading activities.
-    Allocates a portion of your balance (specified in environment variables) to buy cryptocurrencies purchased by the designated traders.
-    Mirrors trader buy and sell actions, aiming to replicate their strategy.
+- Connects to the OKX API using provided credentials.
+- Tracks multiple traders (IDs) and their trading activities.
+- Allocates a portion of your balance (specified in environment variables) to buy cryptocurrencies purchased by the designated traders.
+- Mirrors trader buy and sell actions, aiming to replicate their strategy.
 
 
 Requirements:
-
+```
     Python 3.9,3.10,3.11 
     AWS Account with Terraform configuration 
     Docker 
-
-Environment Variables:
-
-Create a file named .env (not included in version control!) at the root of your project directory and define the following variables:
-```
-# OKX API Credentials
-API_KEY=""
-SECRET_KEY=""
-PASSPHRASE=""
-COIN_TO_BUY = 2
-# Trader IDs (comma-separated)
-UNIQUE_NAMES=id1,id2,id3,id4,id5,id6,id6,id7,id8
 ```
 
-Installation:
+### Environment Variables:
 
-    Set up AWS and Terraform:
-        Create an AWS account (if you don't have one already).
-        Install Terraform (https://www.terraform.io/) and configure it with your AWS credentials.
-        Follow the instructions within your Terraform configuration to provision the necessary infrastructure (ECR repository, Fargate service, etc.).
+Create a file named .env 
+variables:
 
-    Build and Deploy:
-        Run terraform init to initialize Terraform.
-        Run terraform apply to create the infrastructure and deploy the Docker image to your ECR repository.
+##### OKX API Credentials
+- API_KEY=""
+- SECRET_KEY=""
+- PASSPHRASE=""
+- COIN_TO_BUY = 2
+- UNIQUE_NAMES=id1,id2,id3,id4,id5,id6,id6,id7,id8
 
-Usage:
 
+### `Installation:`
+
+##### Set up AWS and Terraform:
+Create an AWS account (if you don't have one already).
+Install Terraform (https://www.terraform.io/) and configure it with your AWS credentials.
+Follow the instructions within your Terraform configuration to provision the necessary infrastructure (ECR repository, Fargate service, etc.).
+
+##### Build and Deploy:
+Run `terraform init` to initialize Terraform.
+        Run `terraform apply` to create the infrastructure and deploy the Docker image to your ECR repository.
+
+##### Usage:
 The application runs as a background service. Once deployed, it continuously monitors the traders and executes buy/sell orders according to their actions and your defined allocation percentage.
 
-Customization:
-
-    You can modify the Python code to tailor the behavior to your specific trading strategy.
-    The Terraform configuration can be adjusted to customize deployment settings.
+##### Customization:
+You can modify the Python code to tailor the behavior to your specific trading strategy.
+The Terraform configuration can be adjusted to customize deployment settings.
 
 
